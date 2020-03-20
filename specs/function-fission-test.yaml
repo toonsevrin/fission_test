@@ -1,0 +1,56 @@
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  name: fission-test-3930344d-c286-43d7-b701-edea279162b9
+  namespace: default
+  annotations:
+    fission-name: fission-test
+    fission-uid: dfe64e26-52b7-47f7-a92f-24315ced73dd
+
+spec:
+  deployment:
+    checksum:
+      sum: a21f9db3209470c9bb1474b788f444bf1512aa88fc3d24618229d22105b6c50b
+      type: sha256
+    type: url
+    url: https://raw.githubusercontent.com/toonsevrin/fission_test/1e7353346814e18b7993c2328b15f2bff5865c76/main.go
+  environment:
+    name: golang-1-13
+    namespace: default
+  source:
+    checksum:
+      sum: a21f9db3209470c9bb1474b788f444bf1512aa88fc3d24618229d22105b6c50b
+      type: sha256
+    type: url
+    url: https://raw.githubusercontent.com/toonsevrin/fission_test/1e7353346814e18b7993c2328b15f2bff5865c76/main.go
+
+status:
+  buildstatus: pending
+---
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  name: fission-test
+  namespace: default
+  annotations:
+    fission-name: fission-test
+    fission-uid: dfe64e26-52b7-47f7-a92f-24315ced73dd
+
+spec:
+  environment:
+    name: golang-1-13
+    namespace: default
+  functionTimeout: 5
+  package:
+    packageref:
+      name: fission-test-3930344d-c286-43d7-b701-edea279162b9
+      namespace: default
+    functionName: Handler
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: poolmgr
+      MaxScale: 0
+      MinScale: 0
+      SpecializationTimeout: 120
+      TargetCPUPercent: 0
+    StrategyType: execution
